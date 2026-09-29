@@ -1,6 +1,6 @@
-# Layer & Form — 3D print studio catalog
+# Essentia — 3D print studio catalog
 
-A responsive, single-page portfolio/catalog with warm ivory and sage colors, a matching dark theme, category filters, search, product detail dialogs, and contact links. No cart, payments, backend, or build step.
+A responsive, single-page portfolio/catalog with warm ivory and sage colors, a matching dark theme, category filters, search, product detail dialogs, and contact links. Bulgarian is the default language; the BG / EN buttons switch the entire catalog and remember the visitor’s choice. No cart, payments, backend, or build step.
 
 ## Preview
 
@@ -14,7 +14,7 @@ Then visit `http://localhost:8000`. The site also works on GitHub Pages: publish
 
 ## Make it your own
 
-**Start with `products.js`.** All six products are editable examples, and “Layer & Form” is a placeholder studio name. The included SVG illustrations are original vector concept art, not photos of real products. Replace the example descriptions and technical details with your actual offerings before sharing the catalog.
+**Start with `products.js`.** All six products are editable examples. Essentia uses your supplied logos in the header and footer (`images/essentia-mark.jpg` and `images/essentia-logo.jpg`). The included SVG product illustrations are original vector concept art, not photos of real products. Replace the example descriptions and technical details with your actual offerings before sharing the catalog.
 
 ### Add your contacts
 
@@ -60,12 +60,31 @@ The large hero illustration is `images/studio.svg`. To replace it, change the he
 
 ### Change branding, text, and colors
 
-- **`index.html`**: studio name/logo, page title, search-engine description, introduction, studio story, custom service section, and footer. Search for `Layer & Form` and `layer` to find the demo branding.
+- **`index.html`**: page structure and Bulgarian content shown before JavaScript runs. For text changes, also update the corresponding key in `translations.js`.
 - **`styles.css`**: edit variables in `:root` for the light palette and `:root[data-theme=dark]` for the dark palette. The theme initially follows the visitor’s device and remembers their manual choice when browser storage is available.
 - **`products.js`**: products, categories, images, and contacts.
+- **`translations.js`**: Bulgarian (`bg`) and English (`en`) interface text, page title, search-engine description, categories, badges, and accessible labels.
 - **`app.js`**: filtering, product dialogs, theme behavior, and contact rendering. Ordinary catalog updates don’t require editing it.
 
 The fonts load from Google Fonts with local sans-serif fallbacks. For a fully offline setup, remove the first `@import` in `styles.css`, or self-host your preferred fonts.
+
+### Maintain both languages
+
+The product objects in `products.js` contain the English copy. Add Bulgarian copy to `window.STUDIO.productTranslations.bg` at the end of the same file, using the same product ID:
+
+```js
+'my-new-lamp': {
+  name: 'Моята нова лампа',
+  label: 'Кратко описание за картата.',
+  alt: 'Кремава лампа с плисиран абажур върху дървено бюро',
+  description: 'По-подробно описание на изделието.',
+  details: ['Цветове: кремаво и зелено', 'Размери', 'Възможности за персонализация']
+},
+```
+
+Images and IDs are shared between languages. Keep the category keys in English (e.g. `Lamps`) so filters stay consistent. Add any new category or badge to both dictionaries in `translations.js`. Missing product translations fall back to English. Search recognizes product copy in both languages and retains the search and selected category when switching.
+
+For interface copy, edit matching keys in both dictionaries in `translations.js`. Also update the Bulgarian fallback inside the corresponding `data-i18n` span in `index.html`. The default HTML language is `bg`. An explicit language selection is saved under `essentia-language` in browser storage; first-time visitors always see Bulgarian regardless of their browser language.
 
 ### Add a section or a separate page
 
@@ -78,7 +97,7 @@ For a service or short story, add a section to `index.html` before `</main>`:
 </section>
 ```
 
-Link to it using `<a href="#process">The process</a>`. For a separate blog or project page, copy `index.html` to `my-project.html` in the same folder, replace its main content, give it a unique title and description, and change home-section links to `index.html#collection`, `index.html#about`, etc. Keep the catalog elements if keeping `app.js`; for a standalone article, remove both script tags (`products.js` and `app.js`) and the theme button, or implement its theme toggle separately. Reuse `styles.css` and the small theme initialization script in the head. Add a link to your page from `index.html`.
+Link to it using `<a href="#process">The process</a>`. For a separate blog or project page, copy `index.html` to `my-project.html` in the same folder, replace its main content, give it a unique title and description, and change home-section links to `index.html#collection`, `index.html#about`, etc. Keep the catalog elements if keeping `app.js`; for a standalone article, remove the catalog scripts (`translations.js`, `products.js`, and `app.js`) and language/theme controls, or implement those controls separately for the article. Reuse `styles.css` and the small theme initialization script in the head. Add a link to your page from `index.html`.
 
 ## Accessibility and behavior
 

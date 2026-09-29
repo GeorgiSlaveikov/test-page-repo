@@ -1,4 +1,8 @@
-const { products, ...contacts } = window.STUDIO;
+const { products, productTranslations = {}, ...contacts } = window.STUDIO;
+let language = 'bg';
+try { if (localStorage.getItem('essentia-language') === 'en') language = 'en'; } catch {}
+const t = key => window.TRANSLATIONS[language][key] ?? key;
+const localizedProduct = product => ({ ...product, ...productTranslations[language]?.[product.id] });
 const grid = document.querySelector('#product-grid');
 const filterBar = document.querySelector('#filters');
 const search = document.querySelector('#search');
@@ -14,32 +18,42 @@ for (const name of categories) {
   const button = document.createElement('button');
   button.className = 'filter'; button.dataset.category = name;
   const icon = document.createElement('span'); icon.setAttribute('aria-hidden', 'true'); icon.textContent = icons[name] || '◇';
-  button.append(icon, document.createTextNode(name));
+  const label = document.createElement('span'); label.className = 'filter-label'; label.textContent = t(name);
+  button.append(icon, label);
   button.addEventListener('click', () => { category = name; render(); });
   filterBar.append(button);
 }
 function render() {
   const query = search.value.trim().toLowerCase();
-  const visible = products.filter(p => (category === 'All objects' || p.category === category) && `${p.name} ${p.category} ${p.label} ${p.description}`.toLowerCase().includes(query));
-  filterBar.querySelectorAll('button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.category === category)));
+  const visible = products.filter(p => {
+    const translated = localizedProduct(p);
+    const searchable = [p, translated, productTranslations.bg?.[p.id]].filter(Boolean).map(item => `${item.name} ${item.label} ${item.description}`).join(' ');
+    return (category === 'All objects' || p.category === category) && `${searchable} ${p.category} ${t(p.category)}`.toLowerCase().includes(query);
+  });
+  filterBar.querySelectorAll('button').forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.category === category));
+    button.querySelector('.filter-label').textContent = t(button.dataset.category);
+  });
   grid.replaceChildren();
-  for (const product of visible) {
-    const card = document.createElement('button'); card.className = 'product-card'; card.setAttribute('aria-label', `View ${product.name}`);
+  for (const original of visible) {
+    const product = localizedProduct(original);
+    const card = document.createElement('button'); card.className = 'product-card'; card.setAttribute('aria-label', `${t('viewProduct')} ${product.name}`);
     const visual = document.createElement('div'); visual.className = 'product-visual';
     const image = document.createElement('img'); image.src = product.image; image.alt = product.alt; image.loading = 'lazy'; image.width = 600; image.height = 480; visual.append(image);
-    if (product.badge) { const badge = document.createElement('span'); badge.className = 'badge'; badge.textContent = product.badge; visual.append(badge); }
+    if (product.badge) { const badge = document.createElement('span'); badge.className = 'badge'; badge.textContent = t(product.badge); visual.append(badge); }
     const arrow = document.createElement('span'); arrow.className = 'card-arrow'; arrow.textContent = '↗'; arrow.setAttribute('aria-hidden', 'true'); visual.append(arrow);
-    const type = document.createElement('span'); type.className = 'product-category'; type.textContent = product.category;
+    const type = document.createElement('span'); type.className = 'product-category'; type.textContent = t(product.category);
     const title = document.createElement('h3'); title.textContent = product.name;
     const label = document.createElement('p'); label.textContent = product.label;
-    card.append(visual, type, title, label); card.addEventListener('click', () => openProduct(product)); grid.append(card);
+    card.append(visual, type, title, label); card.addEventListener('click', () => openProduct(original)); grid.append(card);
   }
-  document.querySelector('#result-count').textContent = `${visible.length} ${visible.length === 1 ? 'object' : 'objects'} to discover`;
+  document.querySelector('#result-count').textContent = `${visible.length} ${t(visible.length === 1 ? 'countOne' : 'countMany')}`;
   document.querySelector('#empty-state').hidden = visible.length !== 0;
 }
-function openProduct(product) {
+function openProduct(original) {
+  const product = localizedProduct(original);
   document.querySelector('#dialog-image').src = product.image; document.querySelector('#dialog-image').alt = product.alt;
-  document.querySelector('#dialog-category').textContent = product.category; document.querySelector('#dialog-title').textContent = product.name;
+  document.querySelector('#dialog-category').textContent = t(product.category); document.querySelector('#dialog-title').textContent = product.name;
   document.querySelector('#dialog-description').textContent = product.description;
   const list = document.createElement('ul');
   for (const detail of product.details || []) { const item = document.createElement('li'); item.textContent = detail; list.append(item); }
@@ -53,9 +67,11 @@ document.querySelector('#dialog-contact').addEventListener('click', () => { clos
 search.addEventListener('input', render);
 document.querySelector('#reset-filters').addEventListener('click', () => { category = 'All objects'; search.value = ''; render(); search.focus(); });
 const themeButton = document.querySelector('#theme-toggle');
-function syncThemeButton() { const dark = document.documentElement.dataset.theme === 'dark'; themeButton.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} theme`); themeButton.title = themeButton.getAttribute('aria-label'); themeButton.setAttribute('aria-pressed', String(dark)); }
+function syncThemeButton() { const dark = document.documentElement.dataset.theme === 'dark'; themeButton.setAttribute('aria-label', t(dark ? 'lightTheme' : 'darkTheme')); themeButton.title = themeButton.getAttribute('aria-label'); themeButton.setAttribute('aria-pressed', String(dark)); }
 themeButton.addEventListener('click', () => { const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = theme; try { localStorage.setItem('lf-theme', theme); } catch {} syncThemeButton(); });
-for (const [key, label] of [['email', 'Say hello by email'], ['instagram', 'Instagram'], ['tiktok', 'TikTok']]) {
+function renderContacts() {
+document.querySelector('#contact-links').replaceChildren();
+for (const [key, label] of [['email', t('email')], ['instagram', 'Instagram'], ['tiktok', 'TikTok']]) {
   const value = contacts[key]?.trim(); if (!value) continue;
   if (key !== 'email' && !/^https:\/\//i.test(value)) continue;
   const link = document.createElement('a'); link.className = 'button secondary'; link.textContent = `${label} ↗`; link.href = key === 'email' ? `mailto:${value}` : value;
@@ -63,5 +79,23 @@ for (const [key, label] of [['email', 'Say hello by email'], ['instagram', 'Inst
   document.querySelector('#contact-links').append(link);
 }
 document.querySelector('#contact-placeholder').hidden = document.querySelector('#contact-links').children.length !== 0;
+}
+function applyLanguage() {
+  document.documentElement.lang = language;
+  document.title = t('pageTitle');
+  document.querySelector('meta[name="description"]').content = t('metaDescription');
+  // Only trusted strings from translations.js are inserted as markup.
+  document.querySelectorAll('[data-i18n]').forEach(element => { element.innerHTML = t(element.dataset.i18n); });
+  for (const attribute of ['aria-label', 'placeholder', 'alt']) {
+    document.querySelectorAll(`[data-i18n-${attribute}]`).forEach(element => element.setAttribute(attribute, t(element.getAttribute(`data-i18n-${attribute}`))));
+  }
+  document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === language)));
+  syncThemeButton(); renderContacts(); render();
+}
+document.querySelectorAll('[data-language]').forEach(button => button.addEventListener('click', () => {
+  language = button.dataset.language;
+  try { localStorage.setItem('essentia-language', language); } catch {}
+  applyLanguage();
+}));
 document.querySelector('#year').textContent = new Date().getFullYear();
-syncThemeButton(); render();
+applyLanguage();

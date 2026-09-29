@@ -10,3 +10,57 @@
 @media(max-width:760px){.custom-banner{display:grid;grid-template-columns:50px 1fr}.custom-banner>.button{grid-column:2;margin-left:0;justify-self:start}}
 @media(max-width:420px){.custom-banner{grid-template-columns:1fr}.custom-banner>.button{grid-column:1}.custom-banner>div:nth-child(2){min-width:0}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+
+/* Essentia: use the supplied artwork unchanged, framing its surrounding space in CSS. */
+.essentia-brand { gap: 12px; }
+.essentia-name { font-family: Georgia, 'Times New Roman', serif; font-size: 30px; font-weight: 400; letter-spacing: 2px; }
+.essentia-mark { display: block; position: relative; width: 42px; height: 48px; overflow: hidden; flex-shrink: 0; mix-blend-mode: multiply; }
+.essentia-mark img { position: absolute; width: 108px; height: auto; max-width: none; left: -30px; top: -10px; }
+.essentia-footer { position: relative; display: block; width: 154px; height: 100px; overflow: hidden; mix-blend-mode: multiply; flex-shrink: 0; }
+.essentia-footer img { position: absolute; width: 208px; height: auto; max-width: none; left: -27px; top: -43px; }
+.essentia-mark img, .essentia-footer img { filter: grayscale(1) contrast(1.4); }
+:root[data-theme=dark] .essentia-mark, :root[data-theme=dark] .essentia-footer { mix-blend-mode: screen; filter: invert(1); }
+.language-switch { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 7px; flex-shrink: 0; }
+.language-switch button { min-width: 38px; min-height: 36px; padding: 5px; border: 0; border-radius: 4px; background: transparent; font-size: 11px; font-weight: 600; }
+.language-switch button[aria-pressed=true] { background: var(--button); color: var(--button-text); }
+.language-switch button:hover:not([aria-pressed=true]) { background: var(--soft); }
+.values > span > [data-i18n] { font-size: inherit; color: inherit; line-height: inherit; }
+.filter .filter-label { font-size: inherit; line-height: inherit; display: inline; }
+html[lang=bg] h1 { font-size: clamp(36px, 3.65vw, 53px); letter-spacing: -1.8px; }
+html[lang=bg] .hero-copy { min-width: 0; }
+html[lang=bg] .custom-banner { gap: 22px; }
+html[lang=bg] .filter { padding-inline: 11px; }
+@media (max-width: 1000px) {
+  .site-header { gap: 18px; }
+  .site-header nav { gap: 18px; }
+  .collection-toolbar { flex-wrap: wrap; }
+  html[lang=bg] .custom-banner .button { gap: 12px; }
+}
+@media (max-width: 760px) {
+  .site-header { flex-wrap: wrap; height: auto; min-height: 88px; padding-block: 14px; gap: 12px; }
+  .site-header .essentia-brand { margin-right: auto; }
+  .site-header nav { order: 4; width: 100%; justify-content: center; margin: 0; gap: 26px; }
+  .site-header nav .nav-collection, .site-header nav > a:not(.nav-contact) { display: inline; }
+  .site-header nav a { min-height: 32px; display: inline-flex; align-items: center; }
+  .essentia-name { font-size: 26px; }
+  .language-switch button { min-height: 38px; }
+  .icon-button { width: 44px; height: 44px; }
+  html[lang=bg] h1 { font-size: clamp(32px, 7.5vw, 52px); }
+  .filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .filter { white-space: normal; }
+  .filter .filter-label { display: inline; }
+  .values { gap: 16px 10px; padding-inline: 0; }
+}
+@media (max-width: 420px) {
+  .site-header { gap: 8px; }
+  .essentia-brand { gap: 5px; }
+  .essentia-name { font-size: 22px; letter-spacing: 1px; }
+  .essentia-mark { width: 34px; height: 42px; }
+  .essentia-mark img { width: 91px; left: -26px; top: -8px; }
+  .language-switch button { min-width: 31px; }
+  .site-header nav { gap: 23px; }
+  .site-header .icon-button { width: 40px; height: 40px; }
+  html[lang=bg] .hero .eyebrow { font-size: 7px; letter-spacing: .8px; }
+  .essentia-footer { width: 124px; height: 86px; }
+  .essentia-footer img { width: 170px; left: -23px; top: -34px; }
+}

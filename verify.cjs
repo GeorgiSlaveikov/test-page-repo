@@ -18,16 +18,31 @@ const path = require('node:path');
   const send = (method, params = {}) => new Promise((resolve, reject) => { pending.set(++id, { resolve, reject }); ws.send(JSON.stringify({ id, method, params })); });
   const evaluate = async expression => { const result = await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }); if (result.exceptionDetails) throw new Error(JSON.stringify(result.exceptionDetails)); return result.result.value; };
   await send('Runtime.enable'); await send('Page.enable');
+  await send('Page.addScriptToEvaluateOnNewDocument', { source: "try { localStorage.removeItem('essentia-language'); } catch {}" }).then(result => { globalThis.initScript = result.identifier; });
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await send('Page.navigate', { url: pathToFileURL(path.join(__dirname, 'index.html')).href });
   for (let i = 0; i < 50; i++) { if (await evaluate("document.querySelectorAll('.product-card').length === 6")) break; await new Promise(r => setTimeout(r, 100)); }
   assert.equal(await evaluate("document.querySelectorAll('.product-card').length"), 6);
+  assert.equal(await evaluate('document.documentElement.lang'), 'bg');
+  assert.equal(await evaluate("document.querySelector('.product-card h3').textContent"), 'Лампа Bloom');
+  assert.equal(await evaluate("document.querySelector('#search').placeholder"), 'Потърсете нещо…');
+  await evaluate("search.value='формички'; search.dispatchEvent(new Event('input'))");
+  assert.equal(await evaluate("document.querySelectorAll('.product-card').length"), 2);
+  await evaluate("document.querySelector('.product-card').click()");
+  assert.equal(await evaluate("document.querySelector('#dialog-title').textContent"), 'Формички „Цветна градина“');
+  await evaluate("dialog.close(); document.querySelector('#reset-filters').click(); document.querySelector('[data-language=en]').click()");
+  assert.equal(await evaluate('document.documentElement.lang'), 'en');
+  assert.equal(await evaluate("localStorage.getItem('essentia-language')"), 'en');
   await evaluate("Promise.all([...document.images].map(i => i.decode().catch(() => {})))");
   assert.equal(await evaluate('[...document.images].every(i => i.complete && i.naturalWidth > 0)'), true);
   await evaluate("document.querySelector('[data-category=\"Lamps\"]').click()");
   assert.equal(await evaluate("document.querySelectorAll('.product-card').length"), 2);
   await evaluate("search.value='ripple'; search.dispatchEvent(new Event('input'))");
   assert.equal(await evaluate("document.querySelectorAll('.product-card').length"), 1);
+  await evaluate("document.querySelector('[data-language=bg]').click()");
+  assert.equal(await evaluate("search.value === 'ripple' && category === 'Lamps' && document.querySelectorAll('.product-card').length === 1"), true);
+  assert.equal(await evaluate("document.querySelector('.product-card h3').textContent"), 'Лампа Ripple');
+  await evaluate("document.querySelector('[data-language=en]').click()");
   await evaluate("document.querySelector('.product-card').focus(); document.querySelector('.product-card').click()");
   assert.equal(await evaluate("dialog.open && document.querySelector('#dialog-title').textContent === 'The Ripple lamp'"), true);
   await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
@@ -50,18 +65,31 @@ const path = require('node:path');
   await evaluate("document.querySelector('#theme-toggle').click()");
   assert.equal(await evaluate("localStorage.getItem('lf-theme')"), 'dark');
   await screenshot('desktop-dark');
+  await evaluate("document.querySelector('[data-language=bg]').click()");
+  await screenshot('desktop-bg-dark');
+  await evaluate("document.documentElement.dataset.theme='light'");
+  await screenshot('desktop-bg-light');
   for (const width of [320, 390, 768, 1024, 1440]) {
     await send('Emulation.setDeviceMetricsOverride', { width, height: 844, deviceScaleFactor: 1, mobile: width < 768 });
-    assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, `overflow at ${width}px`);
+    for (const lang of ['en', 'bg']) {
+      await evaluate(`document.querySelector('[data-language=${lang}]').click()`);
+      assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, `overflow at ${width}px in ${lang}`);
+    }
     if (width === 390) {
       await evaluate("document.documentElement.dataset.theme='light'; window.scrollTo(0,0)");
-      await screenshot('mobile-light');
+      await screenshot('mobile-bg-light');
       await evaluate("document.querySelector('.product-card').click()");
       assert.equal(await evaluate('dialog.getBoundingClientRect().width <= innerWidth'), true);
       await evaluate('dialog.close()');
     }
   }
+  await send('Page.removeScriptToEvaluateOnNewDocument', { identifier: globalThis.initScript });
+  await evaluate("document.querySelector('[data-language=en]').click()");
+  await send('Page.reload');
+  for (let i = 0; i < 50; i++) { if (await evaluate("document.documentElement.lang === 'en' && document.querySelectorAll('.product-card').length === 6")) break; await new Promise(r => setTimeout(r, 100)); }
+  assert.equal(await evaluate('document.documentElement.lang'), 'en');
+  await evaluate("document.querySelector('[data-language=bg]').click()");
   assert.deepEqual(errors, []);
-  console.log('PASS: 6 products, loaded images, filters + search, empty/reset state, dialog + Escape/focus, theme persistence, and no horizontal overflow at 320/390/768/1024/1440px.');
+  console.log('PASS: Bulgarian default, BG/EN switching + persistence, translated products/dialogs/search, loaded logos/images, filters, Escape/focus, theme persistence, and both languages at 320/390/768/1024/1440px.');
   ws.close();
 })().catch(e => { console.error(e); process.exit(1); });

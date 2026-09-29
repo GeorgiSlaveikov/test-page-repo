@@ -22,13 +22,19 @@ const path = require('node:path');
     await send('Input.dispatchMouseEvent', { type: 'mousePressed', ...point, button: 'left', clickCount: 1 });
     await send('Input.dispatchMouseEvent', { type: 'mouseReleased', ...point, button: 'left', clickCount: 1 });
   }
+  async function tap(selector) {
+    const point = await evaluate(`(() => { const element = document.querySelector(${JSON.stringify(selector)}); element.scrollIntoView({block:'center', behavior:'instant'}); const r = element.getBoundingClientRect(); return {x:r.left+r.width/2,y:r.top+r.height/2}; })()`);
+    await send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ ...point, radiusX: 5, radiusY: 5, force: 1, id: 1 }] });
+    await new Promise(r => setTimeout(r, 60));
+    await send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  }
   await send('Runtime.enable'); await send('Page.enable');
   await send('Page.addScriptToEvaluateOnNewDocument', { source: "try { localStorage.removeItem('essentia-language'); } catch {}" }).then(result => { globalThis.initScript = result.identifier; });
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await send('Page.navigate', { url: process.env.CATALOG_URL || pathToFileURL(path.join(__dirname, 'index.html')).href });
   for (let i = 0; i < 50; i++) { if (await evaluate("document.querySelectorAll('.product-card').length === 6")) break; await new Promise(r => setTimeout(r, 100)); }
   assert.equal(await evaluate("document.querySelectorAll('.product-card').length"), 6);
-  assert.equal(await evaluate("document.querySelectorAll('.site-header img, footer img').length"), 0);
+  assert.equal(await evaluate("document.querySelectorAll('.site-header img, footer img').length"), 2);
   assert.equal(await evaluate('document.documentElement.lang'), 'bg');
   assert.equal(await evaluate("document.querySelector('.product-card h3').textContent"), 'Лампа Bloom');
   assert.equal(await evaluate("document.querySelector('#search').placeholder"), 'Потърсете нещо…');
@@ -88,19 +94,46 @@ const path = require('node:path');
   await screenshot('desktop-bg-dark');
   await evaluate("document.documentElement.dataset.theme='light'");
   await screenshot('desktop-bg-light');
-  for (const width of [320, 390, 768, 1024, 1440]) {
+  for (const width of [320, 360, 390, 430, 768, 1024, 1440]) {
     await send('Emulation.setDeviceMetricsOverride', { width, height: 844, deviceScaleFactor: 1, mobile: width < 768 });
+    await send('Emulation.setTouchEmulationEnabled', { enabled: width < 768 });
     for (const lang of ['en', 'bg']) {
-      await click(`[data-language=${lang}]`);
+      await (width < 768 ? tap : click)(`[data-language=${lang}]`);
       assert.equal(await evaluate('document.documentElement.lang'), lang);
       assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, `overflow at ${width}px in ${lang}`);
+    }
+    if (width < 768) {
+      assert.equal(await evaluate("[...document.querySelectorAll('.site-header button, .site-header nav a')].every(el => { const r = el.getBoundingClientRect(); return r.width >= 44 && r.height >= 44; })"), true, `small touch target at ${width}px`);
+      assert.equal(await evaluate("(() => { const brand = document.querySelector('.essentia-brand').getBoundingClientRect(); const language = document.querySelector('.language-switch').getBoundingClientRect(); const theme = document.querySelector('#theme-toggle').getBoundingClientRect(); return brand.right <= language.left && language.right <= theme.left; })()"), true, `header overlaps at ${width}px`);
+      assert.equal(await evaluate("(() => { const mark = document.querySelector('.essentia-mark').getBoundingClientRect(); const name = document.querySelector('.essentia-name').getBoundingClientRect(); const language = document.querySelector('.language-switch').getBoundingClientRect(); return mark.width >= 28 && mark.width <= 38 && mark.right <= name.left && name.right <= language.left; })()"), true, `logo/name overlaps at ${width}px`);
+      assert.equal(await evaluate("(() => { const cards = [...document.querySelectorAll('.product-card')]; return cards.every((card, i) => { if (i % 2) return true; const next = cards[i + 1]; if (!next) return true; return Math.abs(card.querySelector('.product-visual').getBoundingClientRect().top - next.querySelector('.product-visual').getBoundingClientRect().top) < 1 && Math.abs(card.querySelector('p').getBoundingClientRect().bottom - next.querySelector('p').getBoundingClientRect().bottom) < 1; }); })()"), true, `card row misalignment at ${width}px`);
+      const previousTheme = await evaluate('document.documentElement.dataset.theme');
+      await tap('#theme-toggle');
+      assert.notEqual(await evaluate('document.documentElement.dataset.theme'), previousTheme);
+      await tap('[data-category="Lamps"]');
+      assert.equal(await evaluate("document.querySelectorAll('.product-card').length"), 2);
+      await new Promise(r => setTimeout(r, 350));
+      await tap('.product-card');
+      assert.equal(await evaluate('dialog.open'), true);
+      await new Promise(r => setTimeout(r, 250));
+      await tap('#close-dialog');
+      for (let i = 0; i < 20; i++) { if (await evaluate('!dialog.open')) break; await new Promise(r => setTimeout(r, 25)); }
+      assert.equal(await evaluate('dialog.open'), false);
+      await tap('[data-category="All objects"]');
     }
     if (width === 390) {
       await evaluate("document.documentElement.dataset.theme='light'; window.scrollTo(0,0)");
       await screenshot('mobile-bg-light');
+      await tap('#theme-toggle');
+      await screenshot('mobile-bg-dark');
+      await tap('#theme-toggle');
       await evaluate("document.querySelector('.product-card').click()");
       assert.equal(await evaluate('dialog.getBoundingClientRect().width <= innerWidth'), true);
       await evaluate('dialog.close()');
+    }
+    if (width === 320) {
+      await evaluate("document.documentElement.dataset.theme='light'; window.scrollTo({top:0,behavior:'instant'})");
+      await screenshot('mobile-compact-bg-light');
     }
   }
   await send('Page.removeScriptToEvaluateOnNewDocument', { identifier: globalThis.initScript });
@@ -125,6 +158,6 @@ const path = require('node:path');
     for (let i = 0; i < 50; i++) { if (await evaluate("document.querySelectorAll('.product-card').length === 6")) break; await new Promise(r => setTimeout(r, 100)); }
   }
   assert.deepEqual(errors, []);
-  console.log('PASS: name-only branding, BG default, real BG/EN clicks + persistence + rapid switching, translated search/dialogs, reduced motion, Escape/focus, themes, and both languages at 320/390/768/1024/1440px.');
+  console.log('PASS: phone touch taps for BG/EN, themes, filters and dialogs; 44px header targets; no header overlaps; BG default/persistence; both languages at 320/360/390/430/768/1024/1440px.');
   ws.close();
 })().catch(e => { console.error(e); process.exit(1); });

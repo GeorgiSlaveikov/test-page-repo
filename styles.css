@@ -38,6 +38,49 @@
   @keyframes backdrop-reveal { from { opacity: 0; } to { opacity: 1; } }
 }
 
+/* Frames scale proportionally around the artwork, never around its outer JPEG margins. */
+.essentia-mark {
+  position: relative;
+  display: block;
+  width: 38px;
+  aspect-ratio: 375 / 425;
+  flex: 0 0 auto;
+  overflow: hidden;
+  mix-blend-mode: multiply;
+}
+.essentia-mark img {
+  position: absolute;
+  width: 244.5333%;
+  height: auto;
+  max-width: none;
+  left: -66.6667%;
+  top: -17.6471%;
+  filter: grayscale(1) contrast(1.4);
+}
+.essentia-footer {
+  position: relative;
+  display: block;
+  width: 138px;
+  aspect-ratio: 920 / 600;
+  flex: 0 0 auto;
+  overflow: hidden;
+  mix-blend-mode: multiply;
+}
+.essentia-footer img {
+  position: absolute;
+  width: 131.087%;
+  height: auto;
+  max-width: none;
+  left: -15.2174%;
+  top: -40.8333%;
+  filter: grayscale(1) contrast(1.4);
+}
+:root[data-theme=dark] .essentia-mark,
+:root[data-theme=dark] .essentia-footer { mix-blend-mode: screen; filter: invert(1); }
+/* Keep image tops and description baselines aligned when names wrap. */
+.product-card { display: grid; grid-template-rows: auto auto 1fr auto; align-content: start; }
+.product-card h3 { align-self: start; }
+
 /* Essentia wordmark and language controls. */
 .essentia-brand { gap: 12px; }
 .essentia-name { font-family: Georgia, 'Times New Roman', serif; font-size: 30px; font-weight: 400; letter-spacing: 2px; }
@@ -59,14 +102,47 @@ html[lang=bg] .filter { padding-inline: 11px; }
   html[lang=bg] .custom-banner .button { gap: 12px; }
 }
 @media (max-width: 760px) {
-  .site-header { flex-wrap: wrap; height: auto; min-height: 88px; padding-block: 14px; gap: 12px; }
-  .site-header .essentia-brand { margin-right: auto; }
-  .site-header nav { order: 4; width: 100%; justify-content: center; margin: 0; gap: 26px; }
-  .site-header nav .nav-collection, .site-header nav > a:not(.nav-contact) { display: inline; }
-  .site-header nav a { min-height: 32px; display: inline-flex; align-items: center; }
+  .site-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto 44px;
+    grid-template-areas: 'brand language theme' 'navigation navigation navigation';
+    height: auto;
+    min-height: 112px;
+    padding-block: 12px 4px;
+    gap: 8px 12px;
+  }
+  .site-header .essentia-brand { grid-area: brand; margin: 0; min-width: 0; min-height: 44px; }
+  .site-header .language-switch { grid-area: language; }
+  .site-header #theme-toggle { grid-area: theme; }
+  .site-header nav {
+    grid-area: navigation;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    margin: 0;
+    gap: 4px;
+  }
+  .site-header nav a, .site-header nav .nav-collection, .site-header nav > a:not(.nav-contact) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 44px;
+    min-width: 0;
+    padding: 4px 0;
+    text-align: center;
+    line-height: 1.4;
+    font-size: 12px;
+  }
+  .site-header .nav-contact span { margin-left: 0; }
+  .site-header .nav-contact { gap: 5px; }
   .essentia-name { font-size: 26px; }
-  .language-switch button { min-height: 38px; }
+  .essentia-mark { width: 32px; }
+  .essentia-brand { gap: 8px; }
+  .essentia-footer { width: 118px; }
+  .language-switch { padding: 2px; }
+  .language-switch button { min-width: 44px; min-height: 44px; font-size: 12px; }
   .icon-button { width: 44px; height: 44px; }
+  .site-header button, .site-header a { touch-action: manipulation; }
   html[lang=bg] h1 { font-size: clamp(32px, 7.5vw, 52px); }
   .filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .filter { white-space: normal; }
@@ -77,8 +153,14 @@ html[lang=bg] .filter { padding-inline: 11px; }
   .site-header { gap: 8px; }
   .essentia-brand { gap: 5px; }
   .essentia-name { font-size: 22px; letter-spacing: 1px; }
-  .language-switch button { min-width: 31px; }
-  .site-header nav { gap: 23px; }
-  .site-header .icon-button { width: 40px; height: 40px; }
+  .essentia-mark { width: 28px; }
+  .site-header .icon-button { width: 44px; height: 44px; }
   html[lang=bg] .hero .eyebrow { font-size: 7px; letter-spacing: .8px; }
+}
+
+/* Touch screens should not retain desktop hover effects after a tap. */
+@media (hover: none) {
+  .button:hover, .icon-button:hover { transform: none; }
+  .product-card:hover img { transform: none; }
+  .product-card:hover .card-arrow { transform: none; }
 }

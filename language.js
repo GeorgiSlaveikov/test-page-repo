@@ -21,8 +21,9 @@
     });
     document.dispatchEvent(new CustomEvent('essentia:languagechange', { detail: { language } }));
     transition?.cancel();
-    if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      transition = document.querySelector('main').animate(
+    const main = document.querySelector('main');
+    if (animate && typeof main.animate === 'function' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      transition = main.animate(
         [{ opacity: .55, transform: 'translateY(3px)' }, { opacity: 1, transform: 'translateY(0)' }],
         { duration: 220, easing: 'ease-out' }
       );

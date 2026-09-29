@@ -14,7 +14,7 @@ Then visit `http://localhost:8000`. The site also works on GitHub Pages: publish
 
 ## Make it your own
 
-**Start with `products.js`.** All six products are editable examples. The header and footer show only the Essentia name. Your supplied logo files remain in `images/` for possible future use but are not displayed. The included SVG product illustrations are original vector concept art, not photos of real products. Replace the example descriptions and technical details with your actual offerings before sharing the catalog.
+**Start with `products.js`.** All six products are editable examples. The header uses your Essentia symbol beside the name, and the footer uses your full logo. The original JPEG files are in `images/`. Their CSS frames crop the surrounding blank space and scale proportionally on phones; change the frame width rather than the image offsets to resize them. The included SVG product illustrations are original vector concept art, not photos of real products. Replace the example descriptions and technical details with your actual offerings before sharing the catalog.
 
 ### Add your contacts
 
@@ -87,7 +87,7 @@ Images and IDs are shared between languages. Keep the category keys in English (
 
 For interface copy, edit matching keys in both dictionaries in `translations.js`. Also update the Bulgarian fallback inside the corresponding `data-i18n` span in `index.html`. The default HTML language is `bg`. An explicit language selection is saved under `essentia-language` in browser storage; first-time visitors always see Bulgarian regardless of their browser language.
 
-Upload all HTML, CSS, and JavaScript files together. The asset links in `index.html` include a version (`?v=essentia-3`) to prevent old cached scripts from being mixed with new markup. Bump that version when publishing future script/style changes. Language switching initializes in `language.js` before the catalog, so a catalog error does not disable the language buttons.
+Upload all HTML, CSS, and JavaScript files together. The asset links in `index.html` include a version (`?v=essentia-4`) to prevent old cached scripts from being mixed with new markup. Bump that version when publishing future script/style changes. Language switching initializes in `language.js` before the catalog, so a catalog error does not disable the language buttons.
 
 Short transitions accompany language changes, filtering/search, theme changes, button presses, and opening/closing product details. Device-level reduced-motion preferences disable the movement.
 

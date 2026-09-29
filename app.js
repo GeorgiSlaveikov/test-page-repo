@@ -62,7 +62,7 @@ let closingDialog;
 function closeDialog() {
   if (closingDialog) return closingDialog;
   if (!dialog.open) return Promise.resolve();
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (typeof dialog.animate !== 'function' || matchMedia('(prefers-reduced-motion: reduce)').matches) {
     dialog.close();
     return Promise.resolve();
   }

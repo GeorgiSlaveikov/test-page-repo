@@ -7,14 +7,15 @@
 <meta name="color-scheme" content="light dark">
 <title>Essentia — Малки неща. Всекидневна радост.</title>
 <script>try { document.documentElement.dataset.theme = localStorage.getItem('lf-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch {}</script>
-<link rel="stylesheet" href="styles.css">
-<script src="translations.js" defer></script>
-<script src="products.js" defer></script><script src="app.js" defer></script>
+<link rel="stylesheet" href="styles.css?v=essentia-3">
+<script src="translations.js?v=essentia-3" defer></script>
+<script src="language.js?v=essentia-3" defer></script>
+<script src="products.js?v=essentia-3" defer></script><script src="app.js?v=essentia-3" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#collection"><span data-i18n="skip">Към колекцията</span></a>
 <header class="site-header wrap">
-<a class="brand essentia-brand" href="#" aria-label="Essentia — начало" data-i18n-aria-label="home"><span class="essentia-mark"><img src="images/essentia-mark.jpg" alt="" width="917" height="541"></span><span class="essentia-name">Essentia</span></a>
+<a class="brand essentia-brand" href="#" aria-label="Essentia — начало" data-i18n-aria-label="home"><span class="essentia-name">Essentia</span></a>
 <nav aria-label="Основна навигация" data-i18n-aria-label="navigation"><a class="nav-collection" href="#collection"><span data-i18n="navCollection">Колекцията</span></a><a href="#about"><span data-i18n="navStudio">За студиото</span></a><a class="nav-contact" href="#contact"><span data-i18n="navContact">Свържете се</span> <span aria-hidden="true">↗</span></a></nav>
 <div class="language-switch" role="group" aria-label="Език" data-i18n-aria-label="language"><button type="button" data-language="bg" lang="bg" aria-label="Български" aria-pressed="true">BG</button><button type="button" data-language="en" lang="en" aria-label="English" aria-pressed="false">EN</button></div>
 <button id="theme-toggle" class="icon-button" aria-label="Превключване към тъмна тема" title="Превключване към тъмна тема"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z"/></svg></button>
@@ -37,7 +38,7 @@
 <section id="about" class="about wrap"><div><p class="eyebrow"><span data-i18n="aboutEyebrow">ЗАД СЛОЕВЕТЕ</span></p><h2><span data-i18n="aboutTitle">Малко студио.<br>Неща с мисъл.</span></h2></div><div><p><span data-i18n="aboutFirst">Essentia е място за смели идеи и полезни малки предмети. От формичка за сладки за специален празник до лампа, която превръща едно кътче в уютен дом — всичко започва с малко любопитство.</span></p><p><span data-i18n="aboutSecond">Разгледайте примерите, почерпете вдъхновение и ни пишете за подробностите. Ще обсъдим заедно формите, цветовете и личните детайли.</span></p><span class="signature"><span data-i18n="signature">От идея до нещо, което можете да докоснете.</span></span></div></section>
 <section id="contact" class="contact wrap"><p class="eyebrow"><span data-i18n="contactEyebrow">ХУБАВИТЕ НЕЩА ЗАПОЧВАТ С ЕДНО „ЗДРАВЕЙ“</span></p><h2 tabindex="-1"><span data-i18n="contactTitle">Нещо привлече вниманието ви?</span></h2><p><span data-i18n="contactDescription">Имате въпрос или собствена идея? Ще се радваме да ни пишете.</span></p><div id="contact-links" class="contact-links"></div><p id="contact-placeholder" class="contact-placeholder" hidden><span data-i18n="contactPlaceholder">Данните за контакт все още не са добавени. Очаквайте ги скоро.</span></p></section>
 </main>
-<footer class="wrap"><a class="essentia-footer" href="#" aria-label="Essentia — начало" data-i18n-aria-label="home"><img src="images/essentia-logo.jpg" alt="Essentia" width="1206" height="1206"></a><span><span data-i18n="footerNote">Малки неща. С голямо значение.</span></span><span>© <span id="year"></span> Essentia</span></footer>
+<footer class="wrap"><a class="brand essentia-brand" href="#" aria-label="Essentia — начало" data-i18n-aria-label="home"><span class="essentia-name">Essentia</span></a><span><span data-i18n="footerNote">Малки неща. С голямо значение.</span></span><span>© <span id="year"></span> Essentia</span></footer>
 <dialog id="product-dialog" aria-labelledby="dialog-title"><button class="icon-button dialog-close" id="close-dialog" aria-label="Затваряне на подробностите" data-i18n-aria-label="close">×</button><div class="dialog-layout"><img id="dialog-image" src="images/studio.svg" alt=""><div class="dialog-copy"><p id="dialog-category" class="eyebrow"></p><h2 id="dialog-title"></h2><p id="dialog-description"></p><div id="dialog-details"></div><p class="dialog-note"><span data-i18n="dialogNote">Пишете ни, за да обсъдим цветове, персонализация и възможности.</span></p><a class="button primary" id="dialog-contact" href="#contact"><span data-i18n="dialogContact">Нека го обсъдим ↗</span></a></div></div></dialog>
 </body>
 </html>

@@ -11,15 +11,37 @@
 @media(max-width:420px){.custom-banner{grid-template-columns:1fr}.custom-banner>.button{grid-column:1}.custom-banner>div:nth-child(2){min-width:0}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
 
-/* Essentia: use the supplied artwork unchanged, framing its surrounding space in CSS. */
+/* Short, action-driven motion; reduced-motion users get immediate changes. */
+@media (prefers-reduced-motion: no-preference) {
+  body, .site-header, .values, .custom-banner, .contact, footer, dialog,
+  .button, .filter, .language-switch, .language-switch button, .icon-button,
+  .search, .empty-state, .site-header nav a, .product-card p, .hero-description {
+    transition: background-color 240ms ease, color 240ms ease, border-color 240ms ease,
+                box-shadow 200ms ease, transform 200ms ease;
+  }
+  .button:active, .filter:active, .language-switch button:active, .icon-button:active {
+    transform: scale(.96);
+  }
+  .icon-button:hover { background: var(--soft); transform: translateY(-1px); }
+  .icon-button svg { transition: transform 300ms ease; }
+  #theme-toggle[aria-pressed=true] svg { transform: rotate(-25deg); }
+  .search:focus-within { box-shadow: 0 0 0 4px var(--sage); }
+  .product-card { animation: card-reveal 280ms ease-out backwards; animation-delay: var(--reveal-delay, 0ms); }
+  .card-arrow { transition: background-color 200ms ease, transform 200ms ease; }
+  .product-card:hover .card-arrow, .product-card:focus-visible .card-arrow { transform: translate(2px, -2px); }
+  .empty-state:not([hidden]) { animation: card-reveal 220ms ease-out; }
+  dialog[open] { animation: dialog-reveal 220ms cubic-bezier(.2, .7, .3, 1); }
+  dialog[open]::backdrop { animation: backdrop-reveal 220ms ease-out; transition: opacity 150ms ease; }
+  dialog.is-closing::backdrop { opacity: 0; }
+  @keyframes card-reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes dialog-reveal { from { opacity: 0; transform: translateY(12px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes backdrop-reveal { from { opacity: 0; } to { opacity: 1; } }
+}
+
+/* Essentia wordmark and language controls. */
 .essentia-brand { gap: 12px; }
 .essentia-name { font-family: Georgia, 'Times New Roman', serif; font-size: 30px; font-weight: 400; letter-spacing: 2px; }
-.essentia-mark { display: block; position: relative; width: 42px; height: 48px; overflow: hidden; flex-shrink: 0; mix-blend-mode: multiply; }
-.essentia-mark img { position: absolute; width: 108px; height: auto; max-width: none; left: -30px; top: -10px; }
-.essentia-footer { position: relative; display: block; width: 154px; height: 100px; overflow: hidden; mix-blend-mode: multiply; flex-shrink: 0; }
-.essentia-footer img { position: absolute; width: 208px; height: auto; max-width: none; left: -27px; top: -43px; }
-.essentia-mark img, .essentia-footer img { filter: grayscale(1) contrast(1.4); }
-:root[data-theme=dark] .essentia-mark, :root[data-theme=dark] .essentia-footer { mix-blend-mode: screen; filter: invert(1); }
+footer .essentia-name { font-size: 24px; }
 .language-switch { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 7px; flex-shrink: 0; }
 .language-switch button { min-width: 38px; min-height: 36px; padding: 5px; border: 0; border-radius: 4px; background: transparent; font-size: 11px; font-weight: 600; }
 .language-switch button[aria-pressed=true] { background: var(--button); color: var(--button-text); }
@@ -55,12 +77,8 @@ html[lang=bg] .filter { padding-inline: 11px; }
   .site-header { gap: 8px; }
   .essentia-brand { gap: 5px; }
   .essentia-name { font-size: 22px; letter-spacing: 1px; }
-  .essentia-mark { width: 34px; height: 42px; }
-  .essentia-mark img { width: 91px; left: -26px; top: -8px; }
   .language-switch button { min-width: 31px; }
   .site-header nav { gap: 23px; }
   .site-header .icon-button { width: 40px; height: 40px; }
   html[lang=bg] .hero .eyebrow { font-size: 7px; letter-spacing: .8px; }
-  .essentia-footer { width: 124px; height: 86px; }
-  .essentia-footer img { width: 170px; left: -23px; top: -34px; }
 }

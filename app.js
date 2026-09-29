@@ -1,8 +1,6 @@
 const { products, productTranslations = {}, ...contacts } = window.STUDIO;
-let language = 'bg';
-try { if (localStorage.getItem('essentia-language') === 'en') language = 'en'; } catch {}
-const t = key => window.TRANSLATIONS[language][key] ?? key;
-const localizedProduct = product => ({ ...product, ...productTranslations[language]?.[product.id] });
+const t = window.ESSENTIA_I18N.t;
+const localizedProduct = product => ({ ...product, ...productTranslations[window.ESSENTIA_I18N.language]?.[product.id] });
 const grid = document.querySelector('#product-grid');
 const filterBar = document.querySelector('#filters');
 const search = document.querySelector('#search');
@@ -38,6 +36,7 @@ function render() {
   for (const original of visible) {
     const product = localizedProduct(original);
     const card = document.createElement('button'); card.className = 'product-card'; card.setAttribute('aria-label', `${t('viewProduct')} ${product.name}`);
+    card.style.setProperty('--reveal-delay', `${Math.min(grid.children.length, 5) * 25}ms`);
     const visual = document.createElement('div'); visual.className = 'product-visual';
     const image = document.createElement('img'); image.src = product.image; image.alt = product.alt; image.loading = 'lazy'; image.width = 600; image.height = 480; visual.append(image);
     if (product.badge) { const badge = document.createElement('span'); badge.className = 'badge'; badge.textContent = t(product.badge); visual.append(badge); }
@@ -59,11 +58,33 @@ function openProduct(original) {
   for (const detail of product.details || []) { const item = document.createElement('li'); item.textContent = detail; list.append(item); }
   document.querySelector('#dialog-details').replaceChildren(list); dialog.showModal(); document.body.classList.add('modal-open');
 }
-const closeDialog = () => dialog.close();
+let closingDialog;
+function closeDialog() {
+  if (closingDialog) return closingDialog;
+  if (!dialog.open) return Promise.resolve();
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    dialog.close();
+    return Promise.resolve();
+  }
+  dialog.classList.add('is-closing');
+  const animation = dialog.animate(
+    [{ opacity: 1, transform: 'translateY(0) scale(1)' }, { opacity: 0, transform: 'translateY(8px) scale(.985)' }],
+    { duration: 150, easing: 'ease-in' }
+  );
+  closingDialog = animation.finished.catch(() => {}).then(() => {
+    dialog.close();
+    dialog.classList.remove('is-closing');
+    closingDialog = null;
+  });
+  return closingDialog;
+}
+dialog.addEventListener('cancel', event => { event.preventDefault(); closeDialog(); });
 document.querySelector('#close-dialog').addEventListener('click', closeDialog);
 dialog.addEventListener('close', () => document.body.classList.remove('modal-open'));
 dialog.addEventListener('click', event => { if (event.target === dialog) { const rect = dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeDialog(); } });
-document.querySelector('#dialog-contact').addEventListener('click', () => { closeDialog(); setTimeout(() => document.querySelector('#contact a, #contact h2').focus({ preventScroll: true }), 0); });
+document.querySelector('#dialog-contact').addEventListener('click', () => {
+  closeDialog().then(() => document.querySelector('#contact a, #contact h2').focus({ preventScroll: true }));
+});
 search.addEventListener('input', render);
 document.querySelector('#reset-filters').addEventListener('click', () => { category = 'All objects'; search.value = ''; render(); search.focus(); });
 const themeButton = document.querySelector('#theme-toggle');
@@ -80,22 +101,6 @@ for (const [key, label] of [['email', t('email')], ['instagram', 'Instagram'], [
 }
 document.querySelector('#contact-placeholder').hidden = document.querySelector('#contact-links').children.length !== 0;
 }
-function applyLanguage() {
-  document.documentElement.lang = language;
-  document.title = t('pageTitle');
-  document.querySelector('meta[name="description"]').content = t('metaDescription');
-  // Only trusted strings from translations.js are inserted as markup.
-  document.querySelectorAll('[data-i18n]').forEach(element => { element.innerHTML = t(element.dataset.i18n); });
-  for (const attribute of ['aria-label', 'placeholder', 'alt']) {
-    document.querySelectorAll(`[data-i18n-${attribute}]`).forEach(element => element.setAttribute(attribute, t(element.getAttribute(`data-i18n-${attribute}`))));
-  }
-  document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === language)));
-  syncThemeButton(); renderContacts(); render();
-}
-document.querySelectorAll('[data-language]').forEach(button => button.addEventListener('click', () => {
-  language = button.dataset.language;
-  try { localStorage.setItem('essentia-language', language); } catch {}
-  applyLanguage();
-}));
+document.addEventListener('essentia:languagechange', () => { syncThemeButton(); renderContacts(); render(); });
 document.querySelector('#year').textContent = new Date().getFullYear();
-applyLanguage();
+syncThemeButton(); renderContacts(); render();

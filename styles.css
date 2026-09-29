@@ -38,7 +38,7 @@
   @keyframes backdrop-reveal { from { opacity: 0; } to { opacity: 1; } }
 }
 
-/* Frames scale proportionally around the artwork, never around its outer JPEG margins. */
+/* Frames scale proportionally around the artwork, never around its outer transparent margins. */
 .essentia-mark {
   position: relative;
   display: block;
@@ -46,7 +46,6 @@
   aspect-ratio: 375 / 425;
   flex: 0 0 auto;
   overflow: hidden;
-  mix-blend-mode: multiply;
 }
 .essentia-mark img {
   position: absolute;
@@ -55,7 +54,6 @@
   max-width: none;
   left: -66.6667%;
   top: -17.6471%;
-  filter: grayscale(1) contrast(1.4);
 }
 .essentia-footer {
   position: relative;
@@ -64,7 +62,6 @@
   aspect-ratio: 920 / 600;
   flex: 0 0 auto;
   overflow: hidden;
-  mix-blend-mode: multiply;
 }
 .essentia-footer img {
   position: absolute;
@@ -73,10 +70,9 @@
   max-width: none;
   left: -15.2174%;
   top: -40.8333%;
-  filter: grayscale(1) contrast(1.4);
 }
 :root[data-theme=dark] .essentia-mark,
-:root[data-theme=dark] .essentia-footer { mix-blend-mode: screen; filter: invert(1); }
+:root[data-theme=dark] .essentia-footer { filter: invert(1); }
 /* Keep image tops and description baselines aligned when names wrap. */
 .product-card { display: grid; grid-template-rows: auto auto 1fr auto; align-content: start; }
 .product-card h3 { align-self: start; }

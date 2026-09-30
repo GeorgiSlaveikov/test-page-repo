@@ -101,5 +101,4 @@ for (const [key, label] of [['email', t('email')], ['instagram', 'Instagram'], [
 document.querySelector('#contact-placeholder').hidden = document.querySelector('#contact-links').children.length !== 0;
 }
 document.addEventListener('essentia:languagechange', () => { syncThemeButton(); renderContacts(); render(); });
-document.querySelector('#year').textContent = new Date().getFullYear();
 syncThemeButton(); renderContacts(); render();

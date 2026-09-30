@@ -7,7 +7,6 @@ const search = document.querySelector('#search');
 const dialog = document.querySelector('#product-dialog');
 let category = 'All objects';
 const categories = ['All objects', ...new Set(products.map(product => product.category))];
-const icons = { 'All objects': '▦', 'Cookie cutters': '✿', Lamps: '◠', 'Medal hangers': '♧' };
 categories.sort((a, b) => {
   const order = ['All objects', 'Cookie cutters', 'Lamps', 'Medal hangers'];
   return (order.includes(a) ? order.indexOf(a) : 99) - (order.includes(b) ? order.indexOf(b) : 99);
@@ -15,9 +14,8 @@ categories.sort((a, b) => {
 for (const name of categories) {
   const button = document.createElement('button');
   button.className = 'filter'; button.dataset.category = name;
-  const icon = document.createElement('span'); icon.setAttribute('aria-hidden', 'true'); icon.textContent = icons[name] || '◇';
   const label = document.createElement('span'); label.className = 'filter-label'; label.textContent = t(name);
-  button.append(icon, label);
+  button.append(label);
   button.addEventListener('click', () => { category = name; render(); });
   filterBar.append(button);
 }

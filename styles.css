@@ -165,3 +165,44 @@ html[lang=bg] .filter { padding-inline: 11px; }
 .ui-icon{display:inline-block;flex-shrink:0;vertical-align:middle}
 .art-index{display:inline-flex;align-items:center;gap:6px}
 .art-index .ui-icon{width:12px;height:12px}
+
+/* Soft directional light gives artwork and controls a sense of depth. */
+:root {
+  --shadow-color: 39 49 34;
+  --shadow-small: 0 2px 4px rgb(var(--shadow-color) / .06), 0 5px 12px rgb(var(--shadow-color) / .08);
+  --shadow-panel: 0 4px 8px -4px rgb(var(--shadow-color) / .12), 0 18px 36px -16px rgb(var(--shadow-color) / .22);
+  --shadow-raised: 0 8px 14px -6px rgb(var(--shadow-color) / .16), 0 26px 44px -18px rgb(var(--shadow-color) / .3);
+  --edge-light: rgb(255 255 255 / .45);
+}
+:root[data-theme=dark] {
+  --shadow-color: 0 0 0;
+  --shadow-small: 0 2px 5px rgb(var(--shadow-color) / .2), 0 6px 14px rgb(var(--shadow-color) / .22);
+  --shadow-panel: 0 5px 10px -4px rgb(var(--shadow-color) / .35), 0 20px 38px -14px rgb(var(--shadow-color) / .5);
+  --shadow-raised: 0 8px 16px -5px rgb(var(--shadow-color) / .4), 0 28px 48px -16px rgb(var(--shadow-color) / .65);
+  --edge-light: rgb(255 255 255 / .1);
+}
+.hero-art { box-shadow: var(--shadow-raised); }
+.product-visual { box-shadow: var(--shadow-panel); }
+.hero-art::after, .product-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 var(--edge-light);
+  pointer-events: none;
+}
+.custom-banner, .empty-state {
+  box-shadow: inset 0 1px 0 var(--edge-light), var(--shadow-panel);
+}
+.button, .filter[aria-pressed=true], .language-switch button[aria-pressed=true] {
+  box-shadow: inset 0 1px 0 var(--edge-light), var(--shadow-small);
+}
+.card-arrow, .art-label, .badge, .dialog-close { box-shadow: var(--shadow-small); }
+dialog { box-shadow: 0 12px 30px rgb(0 0 0 / .2), 0 36px 90px rgb(0 0 0 / .35); }
+.product-card:focus-visible .product-visual { box-shadow: var(--shadow-raised); }
+@media (hover: hover) and (pointer: fine) {
+  .product-card:hover .product-visual, .button:hover { box-shadow: var(--shadow-raised); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .product-visual { transition: box-shadow 220ms ease; }
+}

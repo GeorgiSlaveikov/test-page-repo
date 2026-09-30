@@ -1,3 +1,4 @@
+const arrowIcon = '<svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg>';
 const { products, productTranslations = {}, ...contacts } = window.STUDIO;
 const t = window.ESSENTIA_I18N.t;
 const localizedProduct = product => ({ ...product, ...productTranslations[window.ESSENTIA_I18N.language]?.[product.id] });
@@ -38,7 +39,7 @@ function render() {
     const visual = document.createElement('div'); visual.className = 'product-visual';
     const image = document.createElement('img'); image.src = product.image; image.alt = product.alt; image.loading = 'lazy'; image.width = 600; image.height = 480; visual.append(image);
     if (product.badge) { const badge = document.createElement('span'); badge.className = 'badge'; badge.textContent = t(product.badge); visual.append(badge); }
-    const arrow = document.createElement('span'); arrow.className = 'card-arrow'; arrow.textContent = '↗'; arrow.setAttribute('aria-hidden', 'true'); visual.append(arrow);
+    const arrow = document.createElement('span'); arrow.className = 'card-arrow'; arrow.innerHTML = arrowIcon; arrow.setAttribute('aria-hidden', 'true'); visual.append(arrow);
     const type = document.createElement('span'); type.className = 'product-category'; type.textContent = t(product.category);
     const title = document.createElement('h3'); title.textContent = product.name;
     const label = document.createElement('p'); label.textContent = product.label;
@@ -93,7 +94,7 @@ document.querySelector('#contact-links').replaceChildren();
 for (const [key, label] of [['email', t('email')], ['instagram', 'Instagram'], ['tiktok', 'TikTok']]) {
   const value = contacts[key]?.trim(); if (!value) continue;
   if (key !== 'email' && !/^https:\/\//i.test(value)) continue;
-  const link = document.createElement('a'); link.className = 'button secondary'; link.textContent = `${label} ↗`; link.href = key === 'email' ? `mailto:${value}` : value;
+  const link = document.createElement('a'); link.className = 'button secondary'; link.textContent = label; link.insertAdjacentHTML('beforeend', arrowIcon); link.href = key === 'email' ? `mailto:${value}` : value;
   if (key !== 'email') { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
   document.querySelector('#contact-links').append(link);
 }

@@ -58,10 +58,10 @@ window.STUDIO = {
     },
     {
       "id": "twist-lamp",
-      "name": "Twist table lamp",
+      "name": "Feeria table lamp",
       "category": "Lamps",
       "label": "Sculptural by day. A warm glow by night.",
-      "description": "A pink sculptural shade with flowing spiral lines on a round white base. The photos show the same lamp switched off and illuminated, revealing the gentle glow through its textured form.",
+      "description": "Feeria table lamp.",
       "image": "images/Photos/lapm1.webp",
       "images": [
         "images/Photos/lapm1.webp",
@@ -74,16 +74,16 @@ window.STUDIO = {
       "height": 1600
     },
     {
-      "id": "ira-medal-hanger",
-      "name": "Ira personalised medal hanger",
+      "id": "medal-hanger",
+      "name": "Medal hanger",
       "category": "Medal hangers",
       "label": "A place for every proud moment.",
-      "description": "A white medal display personalised with the name Ira and a red heart detail. Horizontal rails keep medals together in a display that celebrates the effort behind each achievement.",
+      "description": "A white medal display with a red heart detail. Horizontal rails keep medals together in a display that celebrates the effort behind each achievement.",
       "image": "images/Photos/medalhanger1.webp",
       "images": [
         "images/Photos/medalhanger1.webp"
       ],
-      "alt": "White Ira medal hanger with a red heart and horizontal rails",
+      "alt": "White medal hanger with a red heart and horizontal rails",
       "badge": "",
       "details": [],
       "width": 1200,
@@ -130,17 +130,17 @@ window.STUDIO = {
         "details": []
       },
       "twist-lamp": {
-        "name": "Настолна лампа „Спирала“",
+        "name": "Настолна лампа \"Феерия\"",
         "label": "Скулптурен акцент денем. Топло сияние вечер.",
-        "description": "Розов абажур с плавни спираловидни линии върху кръгла бяла основа. Снимките показват една и съща лампа изключена и включена, когато светлината подчертава релефната ѝ форма.",
-        "alt": "Розова настолна лампа със спираловиден абажур и бяла основа",
+        "description": "Настолна лампа \"Феерия\".",
+        "alt": "Настолна лампа \"Феерия\"",
         "details": []
       },
-      "ira-medal-hanger": {
-        "name": "Закачалка за медали „Ира“",
+      "medal-hanger": {
+        "name": "Закачалка за медали",
         "label": "Място за всеки повод за гордост.",
-        "description": "Бяла закачалка за медали с името Ира и червено сърце. Хоризонталните рамена подреждат отличията в лична колекция, която напомня за усилието зад всяко постижение.",
-        "alt": "Бяла закачалка за медали с името Ира и червено сърце",
+        "description": "Бяла закачалка за медали с червено сърце. Хоризонталните рамена подреждат отличията в лична колекция, която напомня за усилието зад всяко постижение.",
+        "alt": "Бяла закачалка за медали с червено сърце",
         "details": []
       },
       "teodora-medal-hanger": {

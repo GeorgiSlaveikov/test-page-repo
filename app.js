@@ -38,9 +38,12 @@ function render() {
   for (const original of visible) {
     const product = localizedProduct(original);
     const card = document.createElement('button'); card.className = 'product-card'; card.setAttribute('aria-label', `${t('viewProduct')} ${product.name}`);
+    const ratio = (product.width || 600) / (product.height || 480);
+    card.style.setProperty('--photo-ratio', ratio);
+    card.style.setProperty('--card-width', `${Math.max(240, Math.min(620, ratio * 360))}px`);
     card.style.setProperty('--reveal-delay', `${Math.min(grid.children.length, 5) * 25}ms`);
     const visual = document.createElement('div'); visual.className = 'product-visual';
-    const image = document.createElement('img'); image.src = product.image; image.alt = product.alt; image.loading = 'lazy'; image.width = 600; image.height = 480; visual.append(image);
+    const image = document.createElement('img'); image.src = product.image; image.alt = product.alt; image.loading = 'lazy'; image.width = product.width || 600; image.height = product.height || 480; visual.append(image);
     if (product.badge) { const badge = document.createElement('span'); badge.className = 'badge'; badge.textContent = t(product.badge); visual.append(badge); }
     const arrow = document.createElement('span'); arrow.className = 'card-arrow'; arrow.innerHTML = arrowIcon; arrow.setAttribute('aria-hidden', 'true'); visual.append(arrow);
     const type = document.createElement('span'); type.className = 'product-category'; type.textContent = t(product.category);

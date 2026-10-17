@@ -18,7 +18,9 @@ window.STUDIO = {
       ],
       "alt": "White name badges with raised black Bulgarian lettering",
       "badge": "",
-      "details": []
+      "details": [],
+      "width": 1133,
+      "height": 1600
     },
     {
       "id": "desk-calendar",
@@ -33,7 +35,9 @@ window.STUDIO = {
       ],
       "alt": "Cream numbered calendar blocks with a pastel stand",
       "badge": "",
-      "details": []
+      "details": [],
+      "width": 900,
+      "height": 1600
     },
     {
       "id": "celebration-card",
@@ -48,7 +52,9 @@ window.STUDIO = {
       ],
       "alt": "Pink and gold personalised card with a bow, cross and number one",
       "badge": "",
-      "details": []
+      "details": [],
+      "width": 1200,
+      "height": 1600
     },
     {
       "id": "twist-lamp",
@@ -63,7 +69,9 @@ window.STUDIO = {
       ],
       "alt": "Spiral pink table lamp on a round white base",
       "badge": "",
-      "details": []
+      "details": [],
+      "width": 1200,
+      "height": 1600
     },
     {
       "id": "ira-medal-hanger",
@@ -77,7 +85,9 @@ window.STUDIO = {
       ],
       "alt": "White Ira medal hanger with a red heart and horizontal rails",
       "badge": "",
-      "details": []
+      "details": [],
+      "width": 1200,
+      "height": 1600
     },
     {
       "id": "teodora-medal-hanger",
@@ -91,7 +101,9 @@ window.STUDIO = {
       ],
       "alt": "White Teodora medal hanger with pink sporting silhouettes",
       "badge": "",
-      "details": []
+      "details": [],
+      "width": 1600,
+      "height": 1200
     }
   ],
   "productTranslations": {

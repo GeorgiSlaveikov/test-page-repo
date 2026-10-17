@@ -7,6 +7,8 @@ const filterBar = document.querySelector('#filters');
 const search = document.querySelector('#search');
 const dialog = document.querySelector('#product-dialog');
 let category = 'All objects';
+function rebuildFilters() {
+filterBar.replaceChildren();
 const categories = ['All objects', ...new Set(products.map(product => product.category))];
 categories.sort((a, b) => {
   const order = ['All objects', 'Cookie cutters', 'Lamps', 'Medal hangers'];
@@ -19,6 +21,7 @@ for (const name of categories) {
   button.append(label);
   button.addEventListener('click', () => { category = name; render(); });
   filterBar.append(button);
+}
 }
 function render() {
   const query = search.value.trim().toLowerCase();
@@ -100,5 +103,13 @@ for (const [key, label] of [['email', t('email')], ['instagram', 'Instagram'], [
 }
 document.querySelector('#contact-placeholder').hidden = document.querySelector('#contact-links').children.length !== 0;
 }
-document.addEventListener('essentia:languagechange', () => { syncThemeButton(); renderContacts(); render(); });
-syncThemeButton(); renderContacts(); render();
+document.addEventListener('essentia:languagechange', () => { rebuildFilters(); syncThemeButton(); renderContacts(); render(); });
+rebuildFilters(); syncThemeButton(); renderContacts(); render();
+
+window.refreshCatalog = value => {
+  products.splice(0, products.length, ...value.products);
+  for (const key of Object.keys(productTranslations)) delete productTranslations[key];
+  Object.assign(productTranslations, value.productTranslations || {});
+  for (const key of ['email', 'instagram', 'tiktok']) contacts[key] = value[key] || '';
+  category = 'All objects'; rebuildFilters(); renderContacts(); render();
+};

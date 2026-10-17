@@ -1,0 +1,6 @@
+{
+  "name": "essentia-catalog",
+  "private": true,
+  "scripts": { "start": "node server.cjs", "test": "node --test admin.test.cjs" },
+  "engines": { "node": ">=22" }
+}

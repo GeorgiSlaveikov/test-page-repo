@@ -1,6 +1,9 @@
-// UI translations. Keys stay the same in both languages. HTML is used only for trusted, local copy.
+// UI translations.
 window.TRANSLATIONS = {
   "bg": {
+    "Badges": "Баджове",
+    "Calendars": "Календари",
+    "Cards": "Картички",
     "aboutFirst": "Essentia е място за смели идеи и полезни малки предмети. От формичка за сладки за специален празник до лампа, която превръща едно кътче в уютен дом — всичко започва с малко любопитство.",
     "aboutSecond": "Разгледайте примерите, почерпете вдъхновение и ни пишете за подробностите. Ще обсъдим заедно формите, цветовете и личните детайли.",
     "heroDescription": "Създадени с въображение, отпечатани в 3D и с малко по-различен характер. Открийте предмети, които внасят личен почерк в ежедневието ви.",
@@ -47,7 +50,7 @@ window.TRANSLATIONS = {
     "searchPlaceholder": "Потърсете нещо…",
     "searchLabel": "Търсене на продукти",
     "close": "Затваряне на подробностите",
-    "heroAlt": "Илюстрация на зелена лампа, кремава релефна ваза и формичка за сладки във формата на цвете",
+    "heroAlt": "Розова настолна лампа със спираловиден абажур и бяла основа",
     "pageTitle": "Essentia — Малки неща. Всекидневна радост.",
     "metaDescription": "3D принтирани изделия с характер. Разгледайте формички за сладки, настолни лампи, закачалки за медали и персонализирани проекти от Essentia.",
     "lightTheme": "Превключване към светла тема",
@@ -64,6 +67,9 @@ window.TRANSLATIONS = {
     "email": "Пишете ни по имейл"
   },
   "en": {
+    "Badges": "Badges",
+    "Calendars": "Calendars",
+    "Cards": "Cards",
     "aboutFirst": "Essentia is a space for playful ideas and useful little objects. From a cookie cutter for a special celebration to a lamp that makes a corner feel like home, it all starts with a little curiosity.",
     "aboutSecond": "Explore the examples here, find some inspiration, and get in touch about the details. Shapes, colors, and personal touches are part of the conversation.",
     "heroDescription": "Thoughtfully designed, 3D printed, and made to be a little different. Discover objects that bring a personal touch to your everyday.",
@@ -110,7 +116,7 @@ window.TRANSLATIONS = {
     "searchPlaceholder": "Find something…",
     "searchLabel": "Search products",
     "close": "Close product details",
-    "heroAlt": "Illustration of a sculptural sage lamp, a cream ribbed vase, and a terracotta flower cutter in warm sunlight",
+    "heroAlt": "Pink spiral table lamp on a white base",
     "pageTitle": "Essentia — Small objects. Everyday joy.",
     "metaDescription": "Thoughtfully designed 3D printed objects. Discover cookie cutters, sculptural lamps, medal hangers, and custom creations.",
     "lightTheme": "Switch to light theme",

@@ -1,20 +1,6 @@
-## Admin control panel
-
-Run with Node.js 22 or later:
-
-```sh
-npm start
-```
-
-Open http://localhost:3000 and click the small lock at the right end of the header. Username: `admin`. The initial password is the one supplied by the site owner. It is checked on the server, never shipped in browser JavaScript. You can override it with the `ADMIN_PASSWORD` environment variable.
-
-The panel supports photo uploads (JPEG, PNG, WebP, 8 MB), adding/editing/deleting products, category selection or new category names, badges, English/Bulgarian descriptions and details, and contact settings. Publish saves immediately for all visitors. Empty Bulgarian fields fall back to English. Sessions expire after eight hours; log out on shared devices.
-
-Catalog changes and uploaded photos are stored in `data/` (excluded from Git). Back up this directory and mount persistent storage there when hosting. Run one server instance. Set `HOST=0.0.0.0` and the hosting provider's `PORT` as needed. Put the server behind HTTPS and set `COOKIE_SECURE=1` for production. GitHub Pages and Live Server can display the original static catalog, but admin login and shared publishing require this Node server. No deployment has been configured by these changes.
-
 # Essentia — 3D print studio catalog
 
-A responsive, single-page portfolio/catalog with warm ivory and sage colors, a matching dark theme, category filters, search, product detail dialogs, and contact links. Bulgarian is the default language; the BG / EN buttons switch the entire catalog and remember the visitor’s choice. No cart, payments, or build step. An optional Node backend powers admin publishing.
+A responsive, single-page portfolio/catalog with warm ivory and sage colors, a matching dark theme, category filters, search, product detail dialogs, and contact links. Bulgarian is the default language; the BG / EN buttons switch the entire catalog and remember the visitor’s choice. No cart, payments, backend, or build step.
 
 ## Preview
 

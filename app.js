@@ -54,6 +54,22 @@ function render() {
 function openProduct(original) {
   const product = localizedProduct(original);
   document.querySelector('#dialog-image').src = product.image; document.querySelector('#dialog-image').alt = product.alt;
+  const thumbnails = document.querySelector('#dialog-thumbnails');
+  thumbnails.replaceChildren();
+  const photos = product.images || [product.image];
+  thumbnails.hidden = photos.length < 2;
+  photos.forEach((src, index) => {
+    const button = document.createElement('button'); button.type = 'button';
+    button.setAttribute('aria-label', `${product.name} — ${index + 1} / ${photos.length}`);
+    button.setAttribute('aria-pressed', String(index === 0));
+    const image = document.createElement('img'); image.src = src; image.alt = ''; image.loading = 'lazy';
+    button.append(image);
+    button.addEventListener('click', () => {
+      document.querySelector('#dialog-image').src = src;
+      thumbnails.querySelectorAll('button').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+    });
+    thumbnails.append(button);
+  });
   document.querySelector('#dialog-category').textContent = t(product.category); document.querySelector('#dialog-title').textContent = product.name;
   document.querySelector('#dialog-description').textContent = product.description;
   const list = document.createElement('ul');
@@ -105,11 +121,3 @@ document.querySelector('#contact-placeholder').hidden = document.querySelector('
 }
 document.addEventListener('essentia:languagechange', () => { rebuildFilters(); syncThemeButton(); renderContacts(); render(); });
 rebuildFilters(); syncThemeButton(); renderContacts(); render();
-
-window.refreshCatalog = value => {
-  products.splice(0, products.length, ...value.products);
-  for (const key of Object.keys(productTranslations)) delete productTranslations[key];
-  Object.assign(productTranslations, value.productTranslations || {});
-  for (const key of ['email', 'instagram', 'tiktok']) contacts[key] = value[key] || '';
-  category = 'All objects'; rebuildFilters(); renderContacts(); render();
-};

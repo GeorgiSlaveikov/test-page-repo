@@ -1,58 +1,143 @@
-/* EDIT YOUR CATALOG HERE. No build tools needed. See README.md for examples. */
+// Catalog photos grouped by product.
 window.STUDIO = {
-  // Replace empty strings with real contact details to show the links.
-  email: '',
-  instagram: '', // Full URL, e.g. https://www.instagram.com/yourname/
-  tiktok: '', // Full URL, e.g. https://www.tiktok.com/@yourname
-  products: [
-    { id: 'bloom', name: 'The Bloom lamp', category: 'Lamps', label: 'A softer kind of glow.', image: 'images/lamp.svg', alt: 'Illustrated sage green mushroom lamp with a pleated shade', badge: 'STUDIO FAVORITE', description: 'A sculptural little companion for your bedside or favorite reading corner. A pleated shade and a simple silhouette bring a soft, playful touch to your space.', details: ['Concept shown: sage green', 'Ask about available colors', 'Lighting specifications confirmed on enquiry'] },
-    { id: 'garden', name: 'Garden party cutters', category: 'Cookie cutters', label: 'A little joy in every batch.', image: 'images/cutters.svg', alt: 'Illustrated flower, heart, and arch cookie cutter shapes in pastel colors', badge: '', description: 'Flower shapes, soft arches, and sweet little hearts for your next baking idea. This playful set is a starting point for a celebration with personality.', details: ['Example collection: three playful shapes', 'Custom shapes and sizes can be discussed', 'Ask about material suitability and care before food use'] },
-    { id: 'finish-line', name: 'The finish line', category: 'Medal hangers', label: 'Your effort deserves a place.', image: 'images/medals.svg', alt: 'Illustrated dark medal hanger with mountain detail and three hanging medals', badge: 'MAKE IT PERSONAL', description: 'A dedicated spot for the moments you worked for. A mountain-inspired display turns your collection of medals into an everyday reminder of how far you’ve come.', details: ['Concept shown: charcoal with mountain detail', 'Personalize a name or short phrase', 'Mounting details and capacity confirmed on enquiry'] },
-    { id: 'ripple', name: 'The Ripple lamp', category: 'Lamps', label: 'Warm light. Quiet character.', image: 'images/ripple.svg', alt: 'Illustrated ivory sculptural lamp with a wavy silhouette', badge: '', description: 'Soft curves and a rippled surface give this lamp its quiet character. An understated accent for a desk, sideboard, or cozy nook.', details: ['Concept shown: warm ivory', 'Ask about dimensions and finish options', 'Lighting specifications confirmed on enquiry'] },
-    { id: 'little-celebrations', name: 'Little celebrations', category: 'Cookie cutters', label: 'Made for your special moments.', image: 'images/custom-cutter.svg', alt: 'Illustrated terracotta star and personalized arch cutter', badge: 'MAKE IT PERSONAL', description: 'A birthday, a little milestone, or just a reason to bake. Explore personalized lettering and shapes designed around your celebration.', details: ['Personalized lettering concept', 'Share your occasion and preferred size', 'Ask about material suitability and care before food use'] },
-    { id: 'your-pace', name: 'At your own pace', category: 'Medal hangers', label: 'Every little victory belongs.', image: 'images/runner.svg', alt: 'Illustrated sage medal display with a running track motif and two medals', badge: '', description: 'Big milestones and first finishes alike deserve to be remembered. A simple, graphic medal display with room for a personal touch.', details: ['Concept shown: muted sage', 'Discuss your own wording or motif', 'Mounting details and capacity confirmed on enquiry'] }
-  ]
-};
-
-// Bulgarian product copy. Keep the same id as the corresponding product above.
-// Brand/model names such as Bloom and Ripple intentionally stay unchanged.
-window.STUDIO.productTranslations = {
-  bg: {
-    bloom: {
-      name: 'Лампа Bloom', label: 'По-мека светлина. Повече уют.',
-      alt: 'Илюстрация на зелена настолна лампа с плисиран абажур във формата на гъба',
-      description: 'Малък скулптурен акцент за нощното шкафче или любимия кът за четене. Плисираният абажур и изчистеният силует внасят мекота и игрив характер в дома.',
-      details: ['Показан цвят: салвиево зелено', 'Попитайте за наличните цветове', 'Техническите характеристики се уточняват при запитване']
+  "email": "",
+  "instagram": "",
+  "tiktok": "",
+  "products": [
+    {
+      "id": "name-badges",
+      "name": "Name badges",
+      "category": "Badges",
+      "label": "A personal introduction, clearly made.",
+      "description": "Personalised white name badges with raised black lettering. A clean, readable design for introducing your team and giving everyday service a personal touch.",
+      "image": "images/Photos/badge1.webp",
+      "images": [
+        "images/Photos/badge1.webp",
+        "images/Photos/badge1.1.webp",
+        "images/Photos/badge1.2.webp"
+      ],
+      "alt": "White name badges with raised black Bulgarian lettering",
+      "badge": "",
+      "details": []
     },
-    garden: {
-      name: 'Формички „Цветна градина“', label: 'Малко радост във всяка партида.',
-      alt: 'Илюстрация на формички за сладки — цвете, сърце и арка в пастелни цветове',
-      description: 'Цветя, нежни арки и малки сърца за следващото ви сладко вдъхновение. Закачлив комплект, с който всеки празник придобива собствен характер.',
-      details: ['Примерен комплект с три форми', 'Възможност за обсъждане на други форми и размери', 'Преди употреба с храна попитайте за подходящите материали и поддръжка']
+    {
+      "id": "desk-calendar",
+      "name": "Block desk calendar",
+      "category": "Calendars",
+      "label": "A little ritual for every new day.",
+      "description": "A compact desk calendar with numbered blocks and a simple stand. Turn the blocks to mark the date and bring a small decorative detail to your desk or shelf.",
+      "image": "images/Photos/calendar1.webp",
+      "images": [
+        "images/Photos/calendar1.webp",
+        "images/Photos/calendar1.1.webp"
+      ],
+      "alt": "Cream numbered calendar blocks with a pastel stand",
+      "badge": "",
+      "details": []
     },
-    'finish-line': {
-      name: 'Закачалка „Финалната линия“', label: 'Усилията ви заслужават свое място.',
-      alt: 'Илюстрация на тъмна закачалка с планински мотив и три медала',
-      description: 'Специално място за моментите, за които сте положили усилия. Закачалката с планински мотив превръща медалите в ежедневно напомняне колко далеч сте стигнали.',
-      details: ['Показан вариант: графитено сиво с планински мотив', 'Добавете име или кратък надпис', 'Монтажът и допустимото натоварване се уточняват при запитване']
+    {
+      "id": "celebration-card",
+      "name": "Personalised celebration card",
+      "category": "Cards",
+      "label": "A keepsake for a special first celebration.",
+      "description": "A personalised keepsake card with a pink bow, gold-toned details and a decorative number one. A delicate way to mark a first birthday and christening celebration with a personal message.",
+      "image": "images/Photos/card1.webp",
+      "images": [
+        "images/Photos/card1.webp",
+        "images/Photos/card1.1.webp"
+      ],
+      "alt": "Pink and gold personalised card with a bow, cross and number one",
+      "badge": "",
+      "details": []
     },
-    ripple: {
-      name: 'Лампа Ripple', label: 'Топла светлина. Ненатрапчив чар.',
-      alt: 'Илюстрация на кремава настолна лампа с вълнообразен силует',
-      description: 'Меки извивки и релефна повърхност придават на тази лампа ненатрапчив характер. Деликатен акцент за бюро, скрин или уютно кътче.',
-      details: ['Показан цвят: топла слонова кост', 'Попитайте за размери и варианти на завършека', 'Техническите характеристики се уточняват при запитване']
+    {
+      "id": "twist-lamp",
+      "name": "Twist table lamp",
+      "category": "Lamps",
+      "label": "Sculptural by day. A warm glow by night.",
+      "description": "A pink sculptural shade with flowing spiral lines on a round white base. The photos show the same lamp switched off and illuminated, revealing the gentle glow through its textured form.",
+      "image": "images/Photos/lapm1.webp",
+      "images": [
+        "images/Photos/lapm1.webp",
+        "images/Photos/lamp1.1.webp"
+      ],
+      "alt": "Spiral pink table lamp on a round white base",
+      "badge": "",
+      "details": []
     },
-    'little-celebrations': {
-      name: 'Формички „Малки празници“', label: 'За вашите специални моменти.',
-      alt: 'Илюстрация на персонализирана формичка с надпис и формичка звезда',
-      description: 'Рожден ден, малка победа или просто повод да изпечете нещо вкусно. Открийте форми и надписи, създадени специално за вашия празник.',
-      details: ['Пример за персонализиран надпис', 'Споделете повода и желания размер', 'Преди употреба с храна попитайте за подходящите материали и поддръжка']
+    {
+      "id": "ira-medal-hanger",
+      "name": "Ira personalised medal hanger",
+      "category": "Medal hangers",
+      "label": "A place for every proud moment.",
+      "description": "A white medal display personalised with the name Ira and a red heart detail. Horizontal rails keep medals together in a display that celebrates the effort behind each achievement.",
+      "image": "images/Photos/medalhanger1.webp",
+      "images": [
+        "images/Photos/medalhanger1.webp"
+      ],
+      "alt": "White Ira medal hanger with a red heart and horizontal rails",
+      "badge": "",
+      "details": []
     },
-    'your-pace': {
-      name: 'Закачалка „В свое темпо“', label: 'Всяка малка победа има значение.',
-      alt: 'Илюстрация на зелена закачалка с мотив на лекоатлетическа писта и два медала',
-      description: 'Големите постижения и първите финали заслужават да бъдат запомнени. Изчистена закачалка за медали с графичен мотив и място за личен детайл.',
-      details: ['Показан цвят: приглушено зелено', 'Обсъдете собствен надпис или мотив', 'Монтажът и допустимото натоварване се уточняват при запитване']
+    {
+      "id": "teodora-medal-hanger",
+      "name": "Teodora personalised medal hanger",
+      "category": "Medal hangers",
+      "label": "Your name. Your achievements.",
+      "description": "A white medal hanger personalised for Teodora, with pink sporting silhouettes and decorative accents. A dedicated place to display medals and remember meaningful moments from training and competition.",
+      "image": "images/Photos/medalhanger2.webp",
+      "images": [
+        "images/Photos/medalhanger2.webp"
+      ],
+      "alt": "White Teodora medal hanger with pink sporting silhouettes",
+      "badge": "",
+      "details": []
+    }
+  ],
+  "productTranslations": {
+    "bg": {
+      "name-badges": {
+        "name": "Персонализирани баджове",
+        "label": "Лично представяне с ясен почерк.",
+        "description": "Бели баджове с име и релефен черен надпис. Изчистен и четим дизайн за представяне на екипа и лично отношение към всеки клиент.",
+        "alt": "Бели баджове с имена и релефни черни надписи",
+        "details": []
+      },
+      "desk-calendar": {
+        "name": "Настолен календар с кубчета",
+        "label": "Малък ритуал за всеки нов ден.",
+        "description": "Компактен настолен календар с кубчета с цифри и изчистена поставка. Завъртете кубчетата, за да отбележите датата и да добавите декоративен акцент на бюрото или рафта.",
+        "alt": "Кремави кубчета с цифри и пастелна поставка за календар",
+        "details": []
+      },
+      "celebration-card": {
+        "name": "Персонализирана картичка за празник",
+        "label": "Спомен от един специален първи празник.",
+        "description": "Персонализирана картичка с розова панделка, златисти детайли и декоративна единица. Нежен спомен за първи рожден ден и кръщене, допълнен с лично послание.",
+        "alt": "Картичка в розово и златисто с панделка, кръстче и единица",
+        "details": []
+      },
+      "twist-lamp": {
+        "name": "Настолна лампа „Спирала“",
+        "label": "Скулптурен акцент денем. Топло сияние вечер.",
+        "description": "Розов абажур с плавни спираловидни линии върху кръгла бяла основа. Снимките показват една и съща лампа изключена и включена, когато светлината подчертава релефната ѝ форма.",
+        "alt": "Розова настолна лампа със спираловиден абажур и бяла основа",
+        "details": []
+      },
+      "ira-medal-hanger": {
+        "name": "Закачалка за медали „Ира“",
+        "label": "Място за всеки повод за гордост.",
+        "description": "Бяла закачалка за медали с името Ира и червено сърце. Хоризонталните рамена подреждат отличията в лична колекция, която напомня за усилието зад всяко постижение.",
+        "alt": "Бяла закачалка за медали с името Ира и червено сърце",
+        "details": []
+      },
+      "teodora-medal-hanger": {
+        "name": "Закачалка за медали „Теодора“",
+        "label": "Твоето име. Твоите постижения.",
+        "description": "Бяла закачалка за медали с името Теодора, розови спортни силуети и декоративни акценти. Специално място за отличията и спомените от тренировки и състезания.",
+        "alt": "Бяла закачалка за медали с името Теодора и розови спортни силуети",
+        "details": []
+      }
     }
   }
 };

@@ -1,7 +1,7 @@
 // Catalog photos grouped by product.
 window.STUDIO = {
-  "email": "",
-  "instagram": "",
+  "email": "essentiaa.prints@gmail.com",
+  "instagram": "https://www.instagram.com/essentiaa_studio/?hl=en",
   "tiktok": "",
   "products": [
     {

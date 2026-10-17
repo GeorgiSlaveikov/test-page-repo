@@ -54,7 +54,9 @@ function render() {
   document.querySelector('#result-count').textContent = `${visible.length} ${t(visible.length === 1 ? 'countOne' : 'countMany')}`;
   document.querySelector('#empty-state').hidden = visible.length !== 0;
 }
+let activeProduct;
 function openProduct(original) {
+  activeProduct = original;
   const product = localizedProduct(original);
   document.querySelector('#dialog-image').src = product.image; document.querySelector('#dialog-image').alt = product.alt;
   const thumbnails = document.querySelector('#dialog-thumbnails');
@@ -77,7 +79,7 @@ function openProduct(original) {
   document.querySelector('#dialog-description').textContent = product.description;
   const list = document.createElement('ul');
   for (const detail of product.details || []) { const item = document.createElement('li'); item.textContent = detail; list.append(item); }
-  document.querySelector('#dialog-details').replaceChildren(list); dialog.showModal(); document.body.classList.add('modal-open');
+  document.querySelector('#dialog-details').replaceChildren(list); if (!dialog.open) dialog.showModal(); document.body.classList.add('modal-open');
 }
 let closingDialog;
 function closeDialog() {
@@ -116,11 +118,28 @@ document.querySelector('#contact-links').replaceChildren();
 for (const [key, label] of [['email', t('email')], ['instagram', 'Instagram'], ['tiktok', 'TikTok']]) {
   const value = contacts[key]?.trim(); if (!value) continue;
   if (key !== 'email' && !/^https:\/\//i.test(value)) continue;
-  const link = document.createElement('a'); link.className = 'button secondary'; link.textContent = label; link.insertAdjacentHTML('beforeend', arrowIcon); link.href = key === 'email' ? `mailto:${value}` : value;
+  const link = document.createElement('a'); link.className = 'button secondary';
+  const icons = {
+    email: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg>',
+    instagram: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>'
+  };
+  if (icons[key]) link.insertAdjacentHTML('beforeend', icons[key]);
+  const text = document.createElement('span'); text.textContent = key === 'email' ? value : key === 'instagram' ? '@essentiaa_studio' : label;
+  link.append(text); link.href = key === 'email' ? `mailto:${value}` : value;
+  if (key === 'instagram') link.setAttribute('aria-label', 'Instagram @essentiaa_studio');
+  if (key === 'email') link.setAttribute('aria-label', `${t('email')}: ${value}`);
   if (key !== 'email') { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
   document.querySelector('#contact-links').append(link);
 }
 document.querySelector('#contact-placeholder').hidden = document.querySelector('#contact-links').children.length !== 0;
 }
-document.addEventListener('essentia:languagechange', () => { rebuildFilters(); syncThemeButton(); renderContacts(); render(); });
+document.addEventListener('essentia:languagechange', () => {
+  rebuildFilters(); syncThemeButton(); renderContacts(); render();
+  if (dialog.open && activeProduct) {
+    const photo = document.querySelector('#dialog-image').getAttribute('src');
+    openProduct(activeProduct);
+    const index = (activeProduct.images || [activeProduct.image]).indexOf(photo);
+    document.querySelector('#dialog-thumbnails').children[index]?.click();
+  }
+});
 rebuildFilters(); syncThemeButton(); renderContacts(); render();
